@@ -1,0 +1,654 @@
+/****************************************************************
+ * EU Projects Component Search Grid Map List Stylesheet Summary:
+ *  Global
+ *  View Switcher Button (grid,map,list)
+ *  Patch Image "map view"
+ *  Dropdown & Submit Button
+ *  Grid view
+ *  List view
+ *  Map view
+ ****************************************************************/
+
+/**
+ * Global.
+ */
+
+/*Filter function with or without JS*/
+.js #sort-switcher .btn {
+  display: none;
+}
+
+.js #sort-switcher select.form-control {
+  width: 99%;
+}
+
+/*END Filter function with or without JS*/
+#project-content .views-field-title a:hover {
+  color: #004494;
+  text-decoration: underline;
+}
+
+#sort-switcher select.form-control {
+  width: auto;
+  float: left;
+  margin: 0 0 0 5px;
+  background-image: url("images/arrow-down--blue.svg"), linear-gradient(to bottom, #fff, #fff);
+}
+
+#sort-switcher .form-group {
+  margin: 0;
+}
+
+#sort-switcher .btn {
+  margin: 0;
+}
+
+/**
+ * View Switcher Button (grid,map,list) Stylesheet Summary.
+ */
+.search-actions .col-lg-8 {
+  padding-left: 0;
+}
+
+.search-actions .col-lg-4 {
+  padding-right: 0;
+}
+
+#view-switcher ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+#view-switcher {
+  padding-left: 0;
+  height: 35px;
+}
+
+#view-switcher ul a {
+  color: #000;
+  text-decoration: none;
+}
+
+#view-switcher ul a span {
+  color: #004494;
+  top: 4px;
+}
+
+#view-switcher ul li {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+
+#view-switcher ul li .glyphicon {
+  padding-top: 10px;
+  margin-right: 10px;
+}
+
+#view-switcher ul li .glyphicon-map-marker::before {
+  font-size: 1.5em;
+}
+
+#view-switcher ul li .glyphicon-th-large::before {
+  font-size: 1.3em;
+}
+
+#view-switcher ul li .glyphicon-list::before {
+  font-size: 1.3em;
+}
+
+.number-results {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 50px 0 25px;
+}
+
+div.page-content div.container-fluid div.row section.section.col-md-12 {
+  margin-top: 0;
+}
+
+body:not(.search-page) .page-header__hero-title h1 {
+  display: inline-block;
+}
+/* View Switcher Button: Responsive max-width: 768px (transformation) */
+@media (max-width : 768px) {
+  #block-budg-eu-projects-view-switcher #view-switcher {
+    display: none;
+  }
+  .search-actions #view-switcher {
+    height: 1px;
+  }
+}
+
+/**
+ * Patch Image "map view".
+ */
+#map_switcher {
+  background-repeat: no-repeat;
+  background-size: 164px 154px;
+  float: right;
+  margin-right: -350px;
+  margin-top: -220px !important;
+}
+
+.node-type-project #map_switcher {
+  margin-top: -180px !important;
+}
+
+#map_switcher.map {
+  background-image: url("../images/patch-map.png");
+}
+
+#map_switcher a {
+  display: inline-block;
+  width: 164px;
+  height: 154px;
+  color: transparent;
+}
+
+#map_switcher {
+  display: inline-block;
+  width: 164px;
+  height: 154px;
+}
+
+.map #map_switcher {
+  display: none;
+}
+/* Patch Image "map view": Responsive max-width: 1200px  */
+@media (max-width : 1200px) {
+  #map_switcher {
+    margin-top: 0;
+  }
+}
+/* Patch Image "map view": Responsive max-width: 768px (transformation) */
+@media (max-width : 768px) {
+  .map #map_switcher {
+    display: block;
+  }
+  #map_switcher {
+    background-image: url("../images/patch-map-tablet-mobile.png") !important;
+    background-repeat: no-repeat;
+    position: fixed;
+    margin-top: 0;
+    margin-right: 0px;
+    z-index: 99; /*mod oli avant z-index = 1000*/
+    background-size: 50% auto;
+    bottom: -50px;
+    right: -65px;
+  }
+  #map_switcher.list {
+    background-image: url("../images/patch-grid-tablet-mobile.png") !important;
+    z-index: 667;
+  }
+  #map_switcher a {
+    height: 100%;
+    width: 100%;
+  }
+}
+/* Patch Image "map view": Responsive max-width: 480px  */
+@media (max-width : 480px) {
+  #map_switcher {
+    background-size: 35% auto;
+    bottom: -85px;
+    right: -100px;
+    margin-right: 0px;
+  }
+}
+
+/**
+ * Dropdown & Submit Button:
+ */
+#sort-switcher {
+  width: 33.33%;
+  float: right;
+}
+
+/**
+ * Grid view (grid,map,list) Stylesheet Summary:
+ *  Box
+ *  Heading
+ *  Image.
+ */
+/**
+ * Box.
+ */
+@media (max-width : 480px) {
+  .view-search-projects div.row .content {
+    display: none;
+  }
+  .views-field-field-timeframe {
+    display: none;
+  }
+  .view-search-projects .col-lg-4 .views-field {
+    background-color: transparent !important;
+    width: 100%;
+  }
+  #search-results-display .row:nth-child(odd) .col-lg-4:nth-child(even) {
+    background-color: #fff;
+  }
+  #search-results-display .row:nth-child(even) .col-lg-4:nth-child(odd) {
+    background-color: #fff;
+  }
+  #search-results-display .row:nth-child(even) .col-lg-4:nth-child(even) {
+    background-color: #ececec;
+  }
+  .number-results {
+    margin: 0px 0 15px;
+  }
+  #search-projects-sort .select.form-control,
+  #search-projects-sort select.form-control {
+    width: 70% !important;
+    margin-left: 15px !important;
+  }
+  #search-results-display .views-field-field-project-location-country {
+    width: 100%;
+  }
+}
+
+.view-search-projects .col-lg-4 {
+  margin-top: 20px;
+  line-height: 1.2;
+  font-size: 0.9em;
+  background-color: #ececec;
+  border: 15px solid #fff;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.view-search-projects div.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.view-search-projects .pager__wrapper {
+  margin-top: 2em;
+}
+
+/* Box: Responsive max-width: 1200px  */
+@media (max-width : 1200px) {
+  .view-search-projects .col-lg-4 {
+    margin-top: 20px;
+    line-height: 1.2;
+    background-color: #ececec;
+    border: 15px solid #fff;
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 75%;
+  }
+  .field--field-copyright-notice {
+    font-size: 100% !important;
+  }
+}
+/* Box: Responsive max-width: 768px  */
+@media (max-width : 768px) {
+  .filters__wrapper {
+    padding: 0;
+  }
+  #sort-switcher select.form-control {
+    width: 100% !important;
+    margin: 0 0 25px 0;
+  }
+  #sort-switcher .form-group {
+    padding: 25px;
+  }
+  .view-search-projects .col-lg-4 {
+    display: inline-block;
+    font-size: 100%;
+  }
+  .view-search-projects .col-lg-4 .views-field-title {
+    margin-top: 1em !important;
+  }
+  .view-search-projects .col-lg-4 .views-field {
+    padding-bottom: 0.5em;
+  }
+  .views-field-field-eu-budget-contribution {
+    padding-bottom: 3em !important;
+  }
+  .view-search-projects div.row {
+    display: inline-block;
+    flex-direction: none;
+  }
+  .view-search-projects div.row {
+    display: table;
+    flex-direction: none;
+  }
+  .view-search-projects .col-lg-4 {
+    margin-top: 0px;
+    border-top: 0;
+    border-bottom: 0;
+  }
+  .view-search-projects .col-lg-4 .field-content {
+    display: inline-block;
+  }
+  .views-field-title,
+  .views-field-field-project-location-country,
+  .views-field-field-timeframe,
+  .views-field-field-eu-budget-contribution {
+    margin-left: 25px;
+  }
+  .img-responsive {
+    width: 100%;
+  }
+  #search-projects-sort .select.form-control,
+  #search-projects-sort select.form-control {
+    width: 75%;
+    margin-left: 40px;
+    /*should be 25px like the others but for some reason (some -15 somewhere) it is not*/
+  }
+}
+/* Box: Responsive max-width: 480px  */
+@media (max-width : 480px) {
+  .views-field-field-project-location-country,
+  .views-field-field-eu-budget-contribution {
+    display: inline-block;
+    float: left;
+  }
+  .views-field-title,
+  .views-field-field-project-location-country,
+  .views-field-field-timeframe,
+  .views-field-field-eu-budget-contribution {
+    margin-left: 0;
+  }
+  .view-search-projects .col-lg-4 {
+    border: none;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+  }
+  .view-search-projects .col-lg-4 .field-content {
+    display: inline;
+    font-weight: normal;
+  }
+  #search-results-display table tr.odd {
+    background-color: #fff;
+  }
+  .views-field-field-eu-budget-contribution {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+/**
+ * Heading.
+ */
+.view-search-projects .col-lg-4>div:nth-child(3) {
+  margin-top: 1em;
+}
+
+.view-search-projects .col-lg-4 .views-label {
+  font-weight: 700;
+  font-size: 1em;
+}
+
+.view-search-projects .col-lg-4 .field-content {
+  font-weight: 100;
+  position: relative;
+}
+
+.view-search-projects .col-lg-4 .views-field-title {
+  line-height: 1.3em;
+}
+
+.view-search-projects .col-lg-4 .views-field-title a {
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.view-search-projects .col-lg-4>div {
+  padding: 0em 1em 0em 1em;
+}
+
+.view-search-projects .col-lg-4 .views-field-field-eu-budget-contribution {
+  margin-bottom: 1em;
+}
+
+.view-search-projects .col-lg-4 .views-field-title a {
+  text-decoration: none;
+}
+
+.view-search-projects .col-lg-4 .views-field {
+  background-color: #ececec;
+  padding-bottom: 0.6em;
+}
+
+/**
+ * Image.
+ */
+.view-search-projects .views-field-field-visual .file {
+  padding: 0;
+}
+
+.view-search-projects .views-field-field-visual .field--field-copyright-notice {
+  font-size: 0.8em;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.view-search-projects .views-field-field-visual .field.field--field-copyright-notice .field__items {
+  color: #fff;
+  font-size: 0.8em;
+  padding-left: 10px;
+}
+
+.view-search-projects .col-lg-4 .views-field-field-visual {
+  padding: 0;
+}
+
+.view-search-projects .col-lg-4 .views-field-field-visual .file-image {
+  margin-bottom: 0;
+}
+
+/**
+ * List view Stylesheet Summary:
+ *  Table
+ *  Table Heading
+ *  Overwrite EC theme.
+ */
+
+/**
+ * Table.
+ */
+#search-results-display table {
+  margin-top: 25px;
+}
+
+#search-results-display table {
+  border: 1px solid #e1e1e1;
+  font-size: 0.85em;
+}
+
+#search-results-display table a {
+  text-decoration: none;
+}
+
+#search-results-display table tr {
+  border: none;
+}
+
+#search-results-display table tr.odd {
+  background-color: #f2f2f2;
+}
+
+#search-results-display table th a {
+  float: left;
+  display: inline-block;
+}
+
+/**
+ * Table Heading.
+ */
+#search-results-display table th {
+  border-bottom: none;
+  font-size: 1.1em;
+}
+
+#search-results-display table th img {
+  float: right;
+  display: inline-block;
+  top: 3px;
+  margin-left: 10px;
+  position: relative;
+}
+
+#search-results-display table th.views-field-field-timeframe {
+  /*min-width: 12%;*/
+  width: 10%;
+}
+
+#search-results-display table th.views-field-field-eu-budget-contribution {
+  /*min-width: 15%;*/
+  width: 15%;
+}
+
+#search-results-display table th.views-field-field-broad-area {
+  width: 24%;
+}
+
+#search-results-display table th.views-field-field-project-location-country {
+  min-width: 12%;
+}
+
+#block-budg-eu-projects-sort-switcher {
+  position: relative top left;
+}
+
+/**
+ * Overwrite EC theme.
+ */
+.table>thead>tr>td.active,
+.table>thead>tr>th.active,
+.table>thead>tr.active>td,
+.table>thead>tr.active>th,
+.table>tbody>tr>td.active,
+.table>tbody>tr>th.active,
+.table>tbody>tr.active>td,
+.table>tbody>tr.active>th,
+.table>tfoot>tr>td.active,
+.table>tfoot>tr>th.active,
+.table>tfoot>tr.active>td,
+.table>tfoot>tr.active>th {
+  background-color: transparent;
+}
+
+.table>thead>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>th,
+.table>tbody>tr>td,
+.table>tfoot>tr>th,
+.table>tfoot>tr>td {
+  border-top: none;
+}
+
+/**
+ * Map view
+ */
+#block-bean-map {
+  margin-top: 25px;
+}
+
+#leaflet-disclaimer p {
+  max-width: 100%;
+}
+
+.leaflet-close {
+  top: 20px !important;
+}
+
+#leaflet-content .more_info a {
+  font-size: 1em;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  line-height: 1;
+  border-width: 2px;
+  padding: 0.75em 1em;
+  min-height: 2.75em;
+  border-color: #004494;
+  background-color: #004494;
+  display: inline-table;
+}
+
+.leaflet-ui {
+  border: 1px solid #ccc !important;
+}
+.leaflet-map {
+  background-color: #b5d0d0 !important;
+}
+.wtWidgets>:nth-child(2) {
+  padding: 0 !important;
+}
+.leaflet-showpanel .leaflet-content .file {
+  width: 65%;
+}
+.leaflet-showpanel .leaflet-content h3 {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.leaflet-showpanel .leaflet-content p {
+  margin-bottom: 0.3em;
+}
+
+/* Map view : Responsive max-width: 768px */
+@media (max-width : 768px) {
+  #block-budg-eu-projects-view-switcher-results-count {
+    padding: 1em 0 0 1em;
+  }
+
+  .number-results {
+    margin: 0;
+  }
+  #block-budg-eu-projects-view-switcher-results {
+    margin: -5px 0 0;
+    padding: 0;
+  }
+  #block-budg-eu-projects-view-switcher-results .search-actions.clearfix {
+    height: 0px;
+  }
+  .page-content .section.col-md-12 {
+    margin: 0;
+    padding: 0;
+  }
+  #block-bean-map {
+    margin-top: -5px;
+  }
+  #leaflet-disclaimer {
+    padding: 0em 1em 1em 1em;
+  }
+  .leaflet-ui {
+    border: 1px solid #fff !important;
+}
+  .leaflet-menu {
+    display: none;
+  }
+  .leaflet-map {
+    margin-right: 0 !important;
+  }
+  .leaflet-close {
+    top: 0 !important;
+    right: 0 !important;
+    border-radius: 0 !important;
+    background: url(../images/map-panel-close-32-blue.png) center center no-repeat !important;
+    background-color: transparent !important;
+    width: 45px !important;
+    height: 45px !important;
+  }
+  .leaflet-showpanel .leaflet-infopanel {
+    right: 0 !important;
+  }
+  .leaflet-showpanel H2 {
+    font-size: 1.5em;
+    padding-right: 60px;
+  }
+  .leaflet-showpanel .leaflet-content {
+    padding: 0 10px 40px 10px;
+  }
+  .leaflet-showpanel .leaflet-content .file {
+    width: 75%;
+  }
+  .leaflet-showpanel .leaflet-content:nth-child(3) {
+    background-color: red;
+  }
+}

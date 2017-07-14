@@ -1,0 +1,166 @@
+<?php
+/**
+ * @file
+ * Installation file.
+ */
+
+/**
+ * Implements hook_enable().
+ */
+function budg_eu_projects_enable() {
+  $t = get_t();
+  drupal_set_message($t('EU project feature is now enabled on your site.'));
+};
+
+/**
+ * Implements hook_disable().
+ */
+function budg_eu_projects_disable() {
+  $t = get_t();
+  drupal_set_message($t('EU project feature is now disabled on your site.'));
+}
+
+/**
+ * Implements hook_install().
+ */
+function budg_eu_projects_install() {
+  $t = get_t();
+  drupal_set_message($t('EU project feature is now installed on your site.'));
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function budg_eu_projects_uninstall() {
+  $t = get_t();
+  drupal_set_message($t('EU project feature is now uninstalled from your site.'));
+}
+
+/**
+ * Enabling Redirect and Metatag modules.
+ */
+function budg_eu_projects_update_7001() {
+  // Enable redirect module.
+  $modules = array(
+    'redirect',
+  );
+  module_enable($modules);
+
+  // Enable metatag modules.
+  $meta_modules = array(
+    'metatag_facebook',
+    'metatag_opengraph',
+    'metatag_twitter_cards',
+  );
+  module_enable($meta_modules);
+}
+
+/**
+ * Convert datetime to datestamp fields.
+ */
+function budg_eu_projects_update_7101() {
+
+  $fields = [
+    'field_timeframe',
+  ];
+
+  foreach ($fields as $field) {
+    $tables = ['field_data_' . $field, 'field_revision_' . $field];
+
+    $column_names = array($field . '_value', $field . '_value2');
+
+    // Temporary data.
+    $param = [
+      'type' => 'int',
+      'not null' => FALSE,
+      'default' => 0,
+    ];
+
+    // Update base and revision.
+    foreach ($tables as $table) {
+      foreach ($column_names as $column_name) {
+        // Add the field.
+        db_add_field($table, $column_name . '_temp', $param);
+        // Convert the data.
+        db_update($table)->expression($column_name . '_temp', "UNIX_TIMESTAMP($column_name)")->execute();
+        // Drop the table.
+        db_drop_field($table, $column_name);
+        // Rename the updated column.
+        db_change_field($table, $column_name . '_temp', $column_name, $param);
+      }
+    }
+
+    // Change info in the database.
+    db_update('field_config')->fields(['type' => 'datestamp'])->condition('field_name', $field)->execute();
+  }
+  field_cache_clear();
+  // Revert the feature.
+  features_revert(['budg_eu_projects']);
+}
+
+/**
+ * Adapt countries to exceptions for Greek and UK.
+ */
+function budg_eu_projects_update_7102() {
+
+  // Update the iso  code for the terms.
+  // GR -> EL.
+  db_update('field_data_iso_3166_1_alpha_2_code')
+    ->fields(array(
+      'iso_3166_1_alpha_2_code_value' => 'EL',
+    ))
+    ->condition('iso_3166_1_alpha_2_code_value', 'GR', 'LIKE')
+    ->execute();
+
+  // GB-> UK.
+  db_update('field_data_iso_3166_1_alpha_2_code')
+    ->fields(array(
+      'iso_3166_1_alpha_2_code_value' => 'UK',
+    ))
+    ->condition('iso_3166_1_alpha_2_code_value', 'GB', 'LIKE')
+    ->execute();
+
+  // Change Great Britain to United Kingdom.
+  db_update('taxonomy_term_data')
+    ->fields(array(
+      'name' => 'United Kingdom',
+    ))
+    ->condition('name', 'Great Britain', 'LIKE')
+    ->execute();
+
+  // Update the fields.
+  // GR -> EL.
+  db_update('field_data_field_project_location')
+    ->fields(array(
+      'field_project_location_country' => 'EL',
+    ))
+    ->condition('field_project_location_country', 'GR', 'LIKE')
+    ->execute();
+
+  // GB -> UK.
+  db_update('field_data_field_project_location')
+    ->fields(array(
+      'field_project_location_country' => 'UK',
+    ))
+    ->condition('field_project_location_country', 'GB', 'LIKE')
+    ->execute();
+
+  field_cache_clear();
+  // Revert the feature.
+  features_revert(['budg_eu_projects']);
+}
+
+/**
+ * Disable css_injector, js_injector, removed in 2.3.
+ */
+function budg_eu_projects_update_7103() {
+  // Pre-upgrade to platform 2.3 version.
+  $modules = array('js_injector', 'css_injector');
+  module_disable($modules, FALSE);
+  if (drupal_uninstall_modules($modules, FALSE)) {
+    drupal_set_message(t('Platform modules css_injector and/or js_injector are successfully uninstalled. It is now safe to upgrade to platform version 2.3'), 'status');
+  }
+  else {
+    drupal_set_message(t('Platform modules css_injector and/or js_injector are not successfully uninstalled! Upgrading the site to platform version 2.3 will result in missing modules.'), 'error');
+  }
+}

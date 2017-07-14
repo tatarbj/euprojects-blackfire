@@ -1,0 +1,24 @@
+/*
+ * Fixes on forms.
+ */
+.page-admin .view-filters .filters__btn-submit {
+  display: inline-block;
+  width: auto;
+  float: right;
+  clear: both;
+}
+
+.page-admin .view-header {
+  background-color: #e4e4e4;
+  margin-left: -16px;
+  margin-right: -16px;
+  text-align: center;
+  padding: 2em 0;
+  font-weight: bold;
+}
+
+.page-admin div.views-exposed-form:not(as_open) .views-exposed-widgets > div:nth-child(1),
+.page-admin div.views-exposed-form:not(as_open) .views-exposed-widgets > div:nth-child(2) {
+  display: block;
+  float: left;
+}

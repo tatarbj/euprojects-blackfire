@@ -1,0 +1,319 @@
+<?php
+/**
+ * @file
+ * Code for the Eu Projects feature.
+ */
+
+include_once 'budg_eu_projects.features.inc';
+include_once 'inc/budg_eu_projects.blocks.inc';
+include_once 'inc/budg_eu_projects.solr.inc';
+include_once 'inc/budg_eu_projects.views.inc';
+include_once 'inc/budg_eu_projects.forms.inc';
+include_once 'inc/budg_eu_projects.callbacks.inc';
+include_once 'inc/budg_eu_projects_apachesolr.addressfield.inc';
+
+/**
+ * Implements hook_countries_alter().
+ */
+function budg_eu_projects_countries_alter(&$countries) {
+
+  // Replaces the the native drupal country list by
+  // the EC taxonomy "ec_world_countries".
+  $vocabulary = taxonomy_vocabulary_machine_name_load('ec_world_countries');
+  $vid = $vocabulary->vid;
+
+  $query = new EntityFieldQuery();
+  $result = $query
+    ->entityCondition('entity_type', 'taxonomy_term')
+  // Change this to Your ID!!
+    ->propertyCondition('vid', $vid)
+    ->execute();
+
+  $terms = i18n_taxonomy_localize_terms(taxonomy_term_load_multiple(array_keys($result['taxonomy_term'])));
+  $countries = array();
+
+  foreach ($terms as $values) {
+    if (isset($values->iso_3166_1_alpha_2_code[LANGUAGE_NONE])) {
+      $countries[$values->iso_3166_1_alpha_2_code[LANGUAGE_NONE][0]['value']] = $values->name;
+    }
+  }
+
+  asort($countries);
+
+}
+
+/**
+ * Implements hook_menu().
+ */
+function budg_eu_projects_menu() {
+
+  $items['search-projects'] = array(
+    'type' => MENU_CALLBACK,
+    'page callback' => '_budg_eu_projects_ajax_view_switcher_callback',
+    'access arguments' => array('access content'),
+    'access callback' => 'user_access',
+  );
+
+  $items['node/get/ajax/%'] = array(
+    // Render HTML.
+    'page callback' => '_budg_eu_projects_ajax_node_get_ajax',
+    'page arguments' => array(3),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+    // Magic goes here.
+    'delivery callback' => '_budg_eu_projects_ajax_node_callback',
+  );
+
+  $items['content/node/get/ajax/%'] = array(
+    // Render HTML.
+    'page callback' => '_budg_eu_projects_ajax_node_get_ajax',
+    'page arguments' => array(4),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+    // Magic goes here.
+    'delivery callback' => '_budg_eu_projects_ajax_node_callback',
+  );
+
+  $items['block/get/ajax/%'] = array(
+    // Render HTML.
+    'page callback' => '_budg_eu_projects_ajax_block_get_ajax',
+    'page arguments' => array(3),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+    // Magic goes here.
+    'delivery callback' => '_budg_eu_projects_ajax_block_callback',
+  );
+
+  $items['content/block/get/ajax/%'] = array(
+    // Render HTML.
+    'page callback' => '_budg_eu_projects_ajax_block_get_ajax',
+    'page arguments' => array(4),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+    // Magic goes here.
+    'delivery callback' => '_budg_eu_projects_ajax_block_callback',
+  );
+
+  $items['solr/geojson'] = array(
+    // Render HTML.
+    'page callback' => '_budg_eu_projects_solr_geojson',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function budg_eu_projects_preprocess_html(&$vars) {
+  include_once 'inc/budg_eu_projects.functions.inc';
+  $params = drupal_get_query_parameters();
+
+  // Adds class if search has been submitted.
+  if (isset($params['content'])) {
+    $vars['classes_array'][] = 'search-submitted';
+  }
+
+  if (isset($params['view'])) {
+    $vars['classes_array'][] = 'view-changed';
+  }
+
+  // Adds class according to the selected view.
+  $result_display = _budg_eu_projects_result_display($params);
+  $display_view = $result_display['view'];
+
+  $class = 'no-map';
+  if ($display_view == 'map') {
+    $class = 'map';
+  }
+  $vars['classes_array'][] = $class;
+}
+
+/**
+ * Implements hook_query_alter().
+ */
+function budg_eu_projects_query_alter(&$query) {
+
+  // Avoid duplicates for projects with multiple countries.
+  if (isset($query->alterMetaData['view']->name)
+      and $query->alterMetaData['view']->name == "search_projects") {
+    $query->groupBy("node.nid");
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function budg_eu_projects_preprocess_node(&$variables) {
+
+  // Adds default picture to small and non existent visuals.
+  if ($variables['node']->type == 'project') {
+
+    $default_image = get_object_vars(_budg_eu_projects_default_visual());
+    $cr_symbol = '© ';
+    $default_copyright = $cr_symbol . $default_image['field_copyright_notice'][LANGUAGE_NONE][0]['value'];
+    $dcr_markup = "<div class='field field--field-copyright-notice'>\n";
+    $dcr_markup .= "  <div class='field__items'>$default_copyright</div>\n";
+    $dcr_markup .= "</div>\n";
+    $field_visual = $variables['field_visual'];
+    if (count($field_visual) > 0) {
+      foreach ($field_visual as $index => $value) {
+        // Small pictures replaced by default one.
+        if ($value['width'] < 768) {
+          $variables['content']['field_visual'][$index]['file']['#item'] = $default_image;
+          $variables['content']['field_visual'][$index]['field_copyright_notice'][$index]['#markup'] = $dcr_markup;
+          $variables['field_visual'][LANGUAGE_NONE][$index] = $default_image;
+        }
+        // Accepted pictures add '© '.to the copyright.
+        elseif (isset($variables['content']['field_visual'][$index]['field_copyright_notice'][$index]['#markup'])) {
+          $copyright = $cr_symbol . trim(
+              str_replace(
+                '©',
+                '',
+                $variables['content']['field_visual'][$index]['field_copyright_notice'][$index]['#markup'])
+              );
+          $variables['content']['field_visual'][$index]['field_copyright_notice'][$index]['#markup'] = $copyright;
+        }
+      }
+    }
+    // No picture add default one.
+    else {
+      $object = array(
+        '#theme' => 'field',
+        '#weight' => '0',
+        '#title' => 'Visual',
+        '#access' => TRUE,
+        '#label_display' => 'hidden',
+        '#view_mode' => 'full',
+        '#language' => LANGUAGE_NONE,
+        '#field_name' => 'field_visual',
+        '#field_type' => 'file',
+        '#field_translatable ' => 0,
+        '#language' => LANGUAGE_NONE,
+        '#entity_type' => 'node',
+        '#bundle' => 'project',
+        '#formatter' => ' file_rendered',
+        '#items' => array(0 => $default_image),
+        0 => array(
+          'file' => array(
+            '#theme' => 'image_formatter',
+            '#item' => $default_image,
+            '#image_style ' => 'standard_picture_768x432',
+
+          ),
+          'field_copyright_notice' => array(0 => array('#markup' => $dcr_markup)),
+        ),
+        LANGUAGE_NONE => array(0 => $dcr_markup),
+      );
+      $variables['content']['field_visual'] = $object;
+      $variables['field_visual'][0] = $default_image;
+    }
+  }
+}
+
+/**
+ * Generates the array of the default visual.
+ *
+ * @return array
+ *    Content of the default visual.
+ */
+function _budg_eu_projects_default_visual() {
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'file')->propertyCondition('uri', file_build_uri('default_picture.png'))->execute();
+  $file_object = reset($result['file']);
+  $fid = $file_object->fid;
+  return file_load($fid);
+}
+
+/**
+ * Implements hook_feeds_processor_targets_alter().
+ */
+function budg_eu_projects_feeds_processor_targets_alter(&$targets, $entity_type, $bundle) {
+  // Alter existing target.
+  if ($entity_type == 'node' && $bundle == 'project') {
+    if (isset($targets['field_original_id'])) {
+      $targets['field_original_id']['unique_callbacks'][] = '_budg_eu_projects_mapper_unique';
+      $targets['field_original_id']['optional_unique'] = TRUE;
+    }
+  }
+}
+
+/**
+ * Unique_callbacks specified in hook_feeds_processor_targets().
+ *
+ * @param FeedsSource $source
+ *   The Feed source.
+ * @param string $entity_type
+ *   Entity type for the entity to be processed.
+ * @param string $bundle
+ *   Bundle name for the entity to be processed.
+ * @param string $target
+ *   A string identifying the unique target on the entity.
+ * @param array $values
+ *   The unique values to be checked.
+ *
+ * @return int|null
+ *   The existing entity id, or NULL if no existing entity is found.
+ *
+ * @see hook_feeds_processor_targets()
+ * @see FeedsProcessor::existingEntityId()
+ */
+function _budg_eu_projects_mapper_unique(FeedsSource $source, $entity_type, $bundle, $target, array $values) {
+  list($field_name, $column) = explode(':', $target . ':value');
+  // Example for if the target is a field.
+  $query = new EntityFieldQuery();
+  $result = $query
+    ->entityCondition('entity_type', $entity_type)
+    ->entityCondition('bundle', $bundle)
+    ->fieldCondition($field_name, $column, $values)
+    ->execute();
+
+  if (!empty($result[$entity_type])) {
+    return key($result[$entity_type]);
+  }
+}
+
+/**
+ * Implements hook_multiple_field_remove_button_field_widgets_alter().
+ */
+function budg_eu_projects_multiple_field_remove_button_field_widgets_alter(&$fieldwidgets) {
+  $fieldwidgets[] = 'geofield_latlon';
+}
+
+/**
+ * Implements  hook_init().
+ */
+function budg_eu_projects_init() {
+
+  // If it is a node.
+  if (arg(0) == 'node' && is_numeric(arg(1))) {
+    global $language;
+
+    $node = node_load(arg(1));
+    $node_language = $original_language = $node->language;
+
+    if (count($node->translations->data) > 0 && isset($node->translations->data[$language->language])) {
+      if (isset($node->translations->original)) {
+        $original_language = $node->translations->original;
+      }
+
+      $node_language = $node->translations->data[$language->language]['language'];
+    }
+
+    // If no editing/admin page and no translation is available.
+    if ($node && arg(2) == '' && $node_language != $language->language) {
+
+      // Redirects to the original version.
+      include_once 'inc/budg_eu_projects.functions.inc';
+      $language_code = _budg_adapt_language(array('language' => $original_language));
+      $path = 'node/' . $node->nid;
+      $url = trim(drupal_get_path_alias($path, $language_code));
+
+      if ($path != $url) {
+        drupal_goto($url);
+        $_GET['q'] = $url;
+      }
+    }
+  }
+}

@@ -1,0 +1,444 @@
+/**
+ * EU Projects Search Panel Stylesheet Summary:
+ *  Panel
+ *  Show Hide Search Panel Button
+ *  Advanced/basic switch
+ *  Text Field & Drop Down menu
+ *  Refine results & Clear Button
+ *  Responsive max-width: 768px.
+ */
+/**
+ * Panel.
+ */
+
+
+#project-content .container-fluid > .row.padding-reset:nth-child(1) {
+  margin-top: 5em;
+}
+.project-search .field-group {
+  max-width: 1170px;
+  padding-right: 15px;
+  padding-left: 10px;
+}
+
+.jumbotron {
+  background-color: transparent;
+}
+.highlighted.jumbotron {
+  padding: 0;
+  margin: 0;
+}
+#-budg-eu-projects-search-projects .close {
+  opacity: 1;
+  text-shadow: none;
+}
+.project-search h3 {
+  display: none;
+}
+.form-control {
+  color: #000;
+}
+#navbar .navbar-collapse {
+  float: right;
+}
+#navbar {
+  background: transparent;
+  margin-top: -65px;
+}
+
+/**
+ * Show Hide Search Panel Button.
+ */
+
+.block-budg-eu-projects.contextual-links-region {
+  position: inherit !important;
+}
+
+#-budg-eu-projects-search-projects .show-hide {
+  display: flex;
+}
+#-budg-eu-projects-search-projects .display-search {
+  color: #004494;
+  z-index: 100 !important;
+  margin: 0 auto;
+}
+
+#-budg-eu-projects-search-projects .display-search .trigger {
+  display: block;
+}
+
+#-budg-eu-projects-search-projects .display-search:hover {
+  border-color: #ffd617;
+}
+#-budg-eu-projects-search-projects .display-search .close {
+  color: #004494;
+  font-size: 1em;
+}
+#-budg-eu-projects-search-projects .display-search .close:hover {
+  color: #004494;
+  text-decoration: underline;
+}
+#-budg-eu-projects-search-projects .display-search:after {
+  content: none;
+}
+#-budg-eu-projects-search-projects .closed .display-search:after {
+  content: none;
+}
+#-budg-eu-projects-search-projects  .closed {
+  height: 0;
+}
+
+/**
+ * Advanced/basic switch.
+ */
+
+.advanced-search-triggers {
+  display: none;
+}
+
+.project-search.active .advanced-search-triggers {
+  display: block;
+}
+
+.project-search {
+  z-index: 1001 !important;
+}
+
+.project-search {
+  background-color: #e4e4e4;
+  border-bottom: 8px solid #ffd617;
+  margin: 0  -1em;
+  padding-bottom: 2em;
+}
+
+.project-search .field-group {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.project-search .control-label,
+form .control-label,
+label {
+  color: #000;
+  font-size: 1em;
+}
+
+.project-search .advanced-search-triggers {
+  max-width: 1170px;
+  margin: 0 auto;
+  padding: 25px 15px 25px 10px;
+}
+
+.project-search .advanced-search-triggers .trigger {
+  float: none;
+  font-size: 0.9em;
+  font-weight: 600;
+  padding: 8px;
+  border: 2px solid;
+  margin-right: 10px;
+}
+.project-search.closed .project-search.active.as_open {
+  box-shadow: none;
+}
+.project-search .advanced-search-triggers .separator {
+  display: none;
+}
+
+#-budg-eu-projects-search-projects .closed .project-search,
+#-budg-eu-projects-search-projects .closed .display-search .trigger.close {
+  display: none;
+}
+#-budg-eu-projects-search-projects .display-search .open {
+  display: none;
+}
+#-budg-eu-projects-search-projects .closed .display-search .trigger.open {
+  display: block;
+}
+.project-search .open {
+  cursor: default;
+}
+
+.project-search .trigger.close,
+.project-search.as_open .advanced-search-triggers .trigger.open {
+  color: #777;
+  cursor: default;
+}
+
+.project-search .advanced-search-triggers  .trigger.open,
+.project-search.active.as_open .close {
+  color: #004494;
+  cursor: pointer;
+}
+
+.advanced-search-triggers span.trigger.close {
+  display: inline;
+}
+.project-search.active .display-search .close {
+  display: none;
+}
+.project-search.active .display-search .close {
+  display: inline;
+}
+
+.project-search.as_open .form-submit {
+  margin-top: 0.55em;
+}
+
+.project-search:not(as_open) .display-search .open {
+  display: none;
+}
+
+.project-search.active:not(.as_open) .advanced-search {
+  display: none;
+}
+
+/**
+ * Text Field & Drop Down menu.
+ */
+
+.project-search > .filters__filter {
+  clear: none !important;
+}
+.project-search:not(as_open) .basic-search .form-item {
+  margin: 0 auto;
+  display: inline-block;
+  display: -moz-groupbox;
+  float: none;
+  top: 0px;
+  margin-right: 1%;
+}
+div.project-search.as_open .basic-search .form-item {
+  float: left;
+}
+.form-type-select select {
+  background-color: #fff;
+}
+.project-search .form-item {
+  width: 24%;
+  margin-right: 1%;
+  float: left;
+}
+
+.project-search .form-item:nth-child(7) {
+  margin-right: 0em;
+}
+.project-search select {
+  background-color: #fff;
+}
+
+div.as_open .basic-search .form-item,
+div.as_open .basic-search .form-item {
+  float: left;
+  margin-right: 1%;
+}
+
+/**
+ * Refine results & Clear Button.
+ */
+
+.project-search .buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5em;
+}
+
+.js.form-clear {
+  display: none;
+}
+
+.js .as_open.form-clear {
+  display: inline-table;
+}
+
+div.project-search:not(as_open) .form-submit {
+  width: 10em;
+  font-size: 1em;
+  display: inline-block;
+  margin: 0 0.1em;
+  flex-basis: auto;
+}
+
+div.project-search.as_open .form-clear {
+  width: 10em;
+  font-size: 1em;
+  margin-left: 1% !important;
+  display: inline-block;
+}
+div.project-search.as_open .project-search .form-submit {
+  margin-left: 34% !important;
+}
+/**
+ * Responsive max-width: 992px .
+ */
+
+@media (max-width: 992px) {
+
+  div.project-search.as_open .project-search .form-submit {
+    margin-left: 27% !important;
+}
+
+  .project-search .fields {
+    padding-right: 0px;
+}
+  #-budg-eu-projects-search-projects {
+    display: block;
+    visibility: visible;
+  }
+  #block-budg-eu-projects-project-search {
+    background-color: transparent;
+  }
+  #block-budg-eu-projects-project-search .block__content {
+    padding-top: 0;
+  }
+
+  .project-search .fields > .control-label {
+    font-size: 0.8em;
+  }
+}
+
+/**
+ * Responsive max-width: 768px - The side navigation menu
+ */
+
+@media (max-width: 768px) {
+  .project-search.as_open  .form-submit {
+    margin: auto !important;
+}
+  div.field-group .project-search .form-submit {
+    margin: 0 auto;
+}
+
+  .project-search {
+    border-bottom: none;
+    overflow: visible;
+  }
+
+  .mobileNoScroll .project-search {
+    overflow: auto;
+  }
+  body.mobileNoScroll {
+    overflow: hidden;
+  }
+
+  #field-group-search-projects-page-1 .form-submit {
+    overflow: visible;
+    display: block;
+  }
+
+  #-budg-eu-projects-search-projects {
+    display: block;
+    visibility: visible;
+  }
+
+  .project-search .buttons button,
+  div.project-search:not(as_open) .form-submit,
+  div.project-search.as_open .form-clear {
+    margin: 0.5em 0 6em 0;
+    width: 5em;
+  }
+
+  .project-search .form-group {
+    margin-bottom: 0.5em;
+  }
+  #-budg-eu-projects-search-projects {
+    background-color: transparent;
+  }
+  #-budg-eu-projects-search-projects .block__content {
+    padding-top: 0;
+  }
+
+  .search-submitted .search,
+  .search-submitted  .display-search .close {
+    display: none;
+  }
+  .search-submitted  .display-search .open {
+    display: inline;
+  }
+
+  #-budg-eu-projects-search-projects .display-search {
+    position: fixed;
+    right: 15px;
+    top: 25px;
+    width: 150px;
+    display: block;
+    z-index: 1010 !important;
+  }
+
+  #-budg-eu-projects-search-projects .advanced-search-triggers {
+    margin: 30px 0;
+    padding: 10px;
+  }
+  .project-search .form_label,
+  form .label,
+  label {
+    margin-bottom: 0;
+  }
+  .project-search .fields {
+    margin: 15px;
+    position: relative;
+    display: block;
+  }
+
+  .project-search {
+    height: 100%;
+    width: 95%;
+    position: fixed;
+    z-index: 1;
+    top: 98px;
+    display: block;
+    right: 0;
+    -webkit-box-shadow: -9px 12px 8px 4px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: -9px 12px 8px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: -9px 9px 12px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .project-search .wrapper {
+    position: relative;
+    height: 100%;
+    overflow: auto;
+    width: 100%;
+  }
+
+  .project-search .buttons {
+    height: 9em;
+    margin-top: 0;
+  }
+  .project-search .form-item {
+    width: 100% !important;
+  }
+
+  .project-search .select.form-control,
+  .project-search select.form-control {
+    width: 98% !important;
+  }
+  .project-search .advanced_search {
+    margin-left: 0em;
+  }
+  div.project-search:not(as_open)  .basic-search .form-item {
+    margin-right: 4%;
+  }
+}
+
+/**
+ * Responsive max-width: 480px.
+ */
+@media (max-width: 480px) {
+  .project-search {
+    margin-top: -8px;
+  }
+
+  .project-search .display-search {
+    height: 46px;
+    width: 125px;
+    line-height: 2.2em;
+  }
+  .project-search .advanced-search-triggers {
+    padding: 0px;
+    margin-left: 0.7em;
+  }
+
+  div.project-search.as_open .form-submit {
+    margin-top: 1.2em !important;
+  }
+}

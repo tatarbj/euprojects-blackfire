@@ -1,0 +1,37 @@
+name = Eu Projects Theme
+description = Sub theme for Eu Project repository
+package = EU_Projects_Theme
+core = "7.x"
+base theme = europa
+php = 5.6.9
+multisite_version = 2.2
+
+scripts[] = "scripts/eu_projects_theme.js"
+scripts[] = "scripts/eu_projects_theme_ajax.js"
+scripts[] = "scripts/js.cookie-1.5.1.min.js"
+
+stylesheets[all][] = "css/eu.projects.layout.region.css"
+stylesheets[all][] = "css/eu.projects.component.search.grid.map.list.css"
+stylesheets[all][] = "css/eu.projects.component.search.panel.css"
+stylesheets[all][] = "css/eu.projects.page.project.css"
+stylesheets[all][] = "css/bootstrap_glyphicons.css"
+stylesheets[all][] = "css/eu.projects.ajax.css"
+
+; ========================================
+; Regions
+; ========================================
+regions[navigation] = Navigation
+regions[header_top] = Header top
+regions[header] = Header
+regions[header_bottom] = Header bottom
+regions[highlighted] = Highlighted
+regions[help] = Help
+regions[content] = Content
+regions[content_bottom] = Content bottom
+regions[sidebar_first] = Sidebar first
+regions[sidebar_second] = Sidebar second
+regions[footer_top] = Footer Top
+regions[footer] = Footer
+regions[footer_right] = Footer right
+
+settings[shortcut_module_link] = 0

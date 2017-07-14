@@ -1,0 +1,9 @@
+.ajax-load {
+  opacity: 0.5;
+  background-image: url(images/ajax-loader.gif);
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+body.ajax-load {
+  background-attachment: fixed;
+}
